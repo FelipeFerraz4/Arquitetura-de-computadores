@@ -14,7 +14,7 @@ play:
 	add $t4, $t2, $t3
 	add $t5, $t4, $a2
 	
-	move $s6, $t5		#board[i][j]	#lw $t6, $t5
+	lw $s6, 0($t5)		#board[i][j]	#lw $t6, $t5
 	li $t7, -1
 	li $t8, -2
 	li $t9, 1
@@ -27,7 +27,14 @@ play:
 		sw $t0, 0($s6) #board[i][j] = countAdjacenteBombs
 		#move $t6, $t0
 		# move $v0, $t9
-		beq $t6, $zero, revelar
+		beq $t0, $zero, fimdoIf
+			move $a0, $s0
+			move $a1, $s1
+			move $a2, $s2
+			jal revealNeighboringCells
+			restore_context
+			jr $ra
+		fimdoIf
 		
 	move $v0, $t9		#teste
 	restore_context

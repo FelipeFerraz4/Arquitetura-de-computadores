@@ -6,7 +6,7 @@ revealNeighboringCells:
 	save_context
 	move $s0, $a0	#linha
 	move $s1, $a1	#coluna
-	move $s2, $a2	#posição inicial do tabuleiro
+	move $s2, $a2	#posi??o inicial do tabuleiro
 	
 	move $t0, $zero		#count
 	move $t1, $a0
@@ -14,9 +14,9 @@ revealNeighboringCells:
 	move $t2, $a1
 	subi $t2, $t2, 1	#definindo j
 	move $t3, $a0
-	addi $t3, $t3, 1	#condição de parada do for i
+	addi $t3, $t3, 1	#condi??o de parada do for i
 	move $t4, $a1
-	addi $t3, $t3, 1	#condição de parada do for j
+	addi $t3, $t3, 1	#condi??o de parada do for j
 	li $t5, -2
 	comecoForI:
 	bgt $t1, $t3, fimForI
@@ -36,10 +36,17 @@ revealNeighboringCells:
 			bge $t2, SIZE, fimIF
 				move $a0, $t1
 				move $a1, $t2
+				move $a2, $s2
 				jal countAdjacentBombs
+				
 				move $t8, $v0
+				
 				move $t6, $t8
+				
 				bne $t8, $zero,fimdoIF
+					move $a0, $t1
+					move $a1, $t2
+					move $a2, $s2
 					jal revealNeighboringCells
 				fimdoIF:
 				
