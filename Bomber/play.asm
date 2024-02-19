@@ -7,37 +7,40 @@ play:
 	save_context
 	move $s0, $a0	#linha
 	move $s1, $a1	#coluna
-	move $s2, $a2	#posição inicial do tabuleiro
+	move $s2, $a2	#posição inicial do tabuleiro//
 	
 	sll $t2, $a0, 5
 	sll $t3, $a1, 2
 	add $t4, $t2, $t3
 	add $t5, $t4, $a2
-	move $t6, $t5			#lw $t6, $t5
+	
+	move $s6, $t5		#board[i][j]	#lw $t6, $t5
 	li $t7, -1
 	li $t8, -2
 	li $t9, 1
 	    
 	beq $t6, $t7, bomb
-	beq $t6, $t8, safe
-	
-	
-	
+	#bne $t6, $t8, safe
+		move $s2, $a2
+		jal countAdjacentBombs
+		move $t0, $v0
+		sw $t0, 0($s6) #board[i][j] = countAdjacenteBombs
+		#move $t6, $t0
+		# move $v0, $t9
+		beq $t6, $zero, revelar
+		
 	move $v0, $t9		#teste
 	restore_context
 	jr $ra
 	
 	bomb: 
+		sw $t9, 0($t6) #board[i][j] = countAdjacenteBombs
 		move $v0,$zero
 		restore_context
 		jr $ra
 		
 	safe:
-		jal countAdjacentBombs
-		move $t0, $v0
-		move $t6, $t0
-		# move $v0, $t9
-		beq $t6, $zero, revelar
+		
 		restore_context
 		jr $ra
 		

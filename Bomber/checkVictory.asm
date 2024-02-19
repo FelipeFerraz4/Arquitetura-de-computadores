@@ -6,7 +6,7 @@ checkVictory:
 # your code here
 	save_context
 	move $s0, $a2
-	
+
 	move $t0, $zero
 	move $t2, $a2
 	li $t9, 1
@@ -24,7 +24,9 @@ checkVictory:
 			add $t6, $t6, $t7
 			add $t6, $t6, $a2
 			
-			blt $t6, $zero, fimIF
+			lw $s1, 0($t6)
+			
+			blt $s1, $zero, fimIF
 				addi $t0, $t0, 1
 			fimIF:
 		
@@ -46,7 +48,7 @@ checkVictory:
 	jr $ra
 	
 	continua:
-		move $t0, $zero
+		move $v0, $zero
 		restore_context
 		jr $ra
 	

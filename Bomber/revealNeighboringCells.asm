@@ -27,6 +27,8 @@ revealNeighboringCells:
 			add $t6, $t6, $t7
 			add $t6, $t6, $a2
 			
+			lw $t6, 0($t6)
+			
 			bne $t6, $t5, fimIF
 			blt $t1, $zero, fimIF
 			bge $t1, SIZE, fimIF
