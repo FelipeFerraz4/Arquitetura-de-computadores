@@ -44,8 +44,10 @@ revealNeighboringCells:#s3 -<
 			move $t2, $v0 	
 			sw $t2, 0($s5) 	# board[i][j] = x
 		
-			bne $s6, $zero, fimdoIF
-				move $a0, $s3   
+			bne $t2, $zero, fimdoIF
+				move $a0, $s3
+				move $a1, $s4
+				move $a2, $s2   
 				jal revealNeighboringCells
 			fimdoIF:
 			fimIF:				
