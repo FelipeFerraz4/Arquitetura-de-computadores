@@ -2,64 +2,58 @@
 
 .globl revealNeighboringCells
 
-revealNeighboringCells:
+revealNeighboringCells:#s3 -<
+# your code here
 	save_context
-	move $s0, $a0	#linha
-	move $s1, $a1	#coluna
-	move $s2, $a2	#posi??o inicial do tabuleiro
-	
-	move $t0, $zero		#count
-	move $t1, $a0
-	subi $t1, $t1, 1	#definindo i
-	move $t2, $a1
-	subi $t2, $t2, 1	#definindo j
-	move $t3, $a0
-	addi $t3, $t3, 1	#condi??o de parada do for i
-	move $t4, $a1
-	addi $t3, $t3, 1	#condi??o de parada do for j
-	li $t5, -2
+	move $s0, $a0 	# linha
+	move $s1, $a1 	# coluna
+	move $s2, $a2 	# arrayBoard
+
+	subi $s3, $s0, 1	# i
+
 	comecoForI:
-	bgt $t1, $t3, fimForI
+		addi $t0, $s0, 1 	# condição do For I
+		bgt $s3, $t0, fimForI
+		subi $s4, $s1, 1	# j 
+	
 		comecoForJ:
-		bgt $t2, $t4, fimForJ
-			sll $t6, $t1, 5
-			sll $t7, $t2, 2
-			add $t6, $t6, $t7
-			add $t6, $t6, $a2
+			addi $t9, $s1, 1 	# condição do For J
+			bgt $s4, $t9, fimForJ
 			
-			lw $t6, 0($t6)
-			
-			bne $t6, $t5, fimIF
-			blt $t1, $zero, fimIF
-			bge $t1, SIZE, fimIF
-			blt $t2, $zero, fimIF
-			bge $t2, SIZE, fimIF
-				move $a0, $t1
-				move $a1, $t2
-				move $a2, $s2
-				jal countAdjacentBombs
-				
-				move $t8, $v0
-				
-				move $t6, $t8
-				
-				bne $t8, $zero,fimdoIF
-					move $a0, $t1
-					move $a1, $t2
-					move $a2, $s2
-					jal revealNeighboringCells
-				fimdoIF:
-				
-			fimIF:
-		addi $t2, $t2, 1
-		j comecoForJ
+			li $t0, SIZE
+			mul $t0, $t0, $s3
+			add $t0, $t0, $s4
+			li $t1, 4
+			mul $t0, $t0, $t1
+			add $s5, $t0, $s2
+
+			lw $s6, 0($s5) 
+			li $t1, -2
+	
+			blt $s3, $zero, fimIF
+			bge $s3, SIZE, fimIF
+			blt $s4, $zero, fimIF
+			bge $s4, SIZE, fimIF
+			bne $s6, $t1, fimIF 	
+	
+			move $a0, $s3
+			move $a1, $s4
+			move $a2, $s2
+			jal countAdjacentBombs
+
+			move $t2, $v0 	
+			sw $t2, 0($s5) 	# board[i][j] = x
+		
+			bne $s6, $zero, fimdoIF
+				move $a0, $s3   
+				jal revealNeighboringCells
+			fimdoIF:
+			fimIF:				
+			addi $s4, $s4, 1
+			j comecoForJ
 		fimForJ:
-	move $t2, $zero
-	addi $t1, $t1, 1
-	j comecoForI
+		addi $s3, $s3, 1
+		j comecoForI
 	fimForI:
-	
-	
-	
 	restore_context
 	jr $ra
