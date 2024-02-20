@@ -1,0 +1,18 @@
+Campo minado
+    Funções
+        Preparar tabuleiro - colocar bombas e espaço vazios
+        Mostrar tabuleiro
+        Jogada
+            pegar o quadrado do tabuleiro
+            checar se tem Bomba
+                se tiver - fim de jogo
+                senão
+                    verificar os quadrados adjacentes se tem quadrados vazios
+                        se tiver, revelar eles e verificar novamente
+                    verificar se ha bombas
+                        se tiver, indicar a quantidade com numeros
+
+                     
+
+        Checar Vitoria
+        
